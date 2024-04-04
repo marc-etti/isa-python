@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isa"
+version = "0.0.1"
+dependencies = []
+requires-python = ">=3.8"
+authors = [
+  {name = "Damiano Azzolini", email = "dazzolini@unife.it"}
+]
+maintainers = [
+  {name = "Andrea Marchetti", email = "amarchetti@unife.it"}
+]
+description = "Applicazione molto bella per calcolare metriche"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["metrics"]
+
+[project.scripts]
+isa = "isa:main"
