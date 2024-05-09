@@ -35,6 +35,15 @@ class Operations():
             result += abs(self.predicted[i] - self.expected[i])
         return result / len(self.predicted)
 
+    def _mae_zip(self) -> float:
+        """
+        Mean Absolute Error
+        """
+        result: float = 0
+        for p, e in zip(self.predicted, self.expected):
+            result += abs(p - e)
+        return result / len(self.predicted)    
+
     def _mse(self) -> float:
         """
         Mean Squared Error
@@ -52,6 +61,8 @@ class Operations():
             return self._mae()
         elif self.metrics == 'MSE':
             return self._mse()
+        elif self.metrics == 'MAE_ZIP':
+            return self._mae_zip()
         else:
             print("Error")
             return -1
@@ -83,7 +94,7 @@ def main():
                         type=str,
                         required=True,
                         help='Metrics to compute',
-                        choices=['MAE','MSE'])
+                        choices=['MAE','MSE','MAE_ZIP'])
     
     logging.basicConfig(level=logging.WARNING) #DEBUG, INFO, WARNING, ERROR, CRITICAL
     """
