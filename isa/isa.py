@@ -19,7 +19,8 @@ class Operations():
 
         if not self._is_consistent():
             # print("Error: predicted and expected lists have different lengths")
-            logging.critical("Error: predicted and expected lists have different lengths")
+            # logging.critical("Error: predicted and expected lists have different lengths")
+            raise ValueError("Error: predicted and expected lists have different lengths")
             sys.exit(1)
 
     def _is_consistent(self) -> bool:
