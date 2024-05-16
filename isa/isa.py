@@ -42,7 +42,17 @@ class Operations():
         result: float = 0
         for p, e in zip(self.predicted, self.expected):
             result += abs(p - e)
-        return result / len(self.predicted)    
+        return result / len(self.predicted)
+
+    def _mae_map(self) -> float:
+        """
+        Mean Absolute Error
+        """
+        result: float = 0
+        fn = lambda p, e : abs(p - e)
+        result = sum( list(map(fn, self.predicted, self.expected)) )
+        
+        return result / len(self.predicted)   
 
     def _mse(self) -> float:
         """
