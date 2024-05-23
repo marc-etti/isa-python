@@ -5,6 +5,8 @@ import sys
 """libreria per gestire log"""
 import logging
 
+import math
+
 class Operations():
     """
     Calcola metriche di errore tra predicted e expected values (MAE, MSE) 
@@ -62,6 +64,12 @@ class Operations():
         for i in range(0, len(self.predicted)):
             result += (self.predicted[i] - self.expected[i])**2
         return result / len(self.predicted)
+    
+    def _rmse(self) -> float:
+        """
+        Root Mean Squared Error
+        """
+        return self._mse()**0.5
 
     def compute_metrics(self) -> float:
         """
@@ -73,17 +81,16 @@ class Operations():
             return self._mse()
         elif self.metrics == 'MAE_ZIP':
             return self._mae_zip()
+        elif self.metrics == 'RMSE':
+            return self._rmse()
         else:
             print("Error")
             return -1
 
-def main():
+def setup_parser() -> argparse.Namespace:
     """
-    1. interpretazione argomenti da linea di comando
-       $ isa --predicted 1 2 3 --expected 1 2 4 --metrics MAE
+    Funzione
     """
-
-    print("Hello, World!")
     parser = argparse.ArgumentParser(
                         prog='isa',
                         description='computes error metrics')
@@ -104,7 +111,19 @@ def main():
                         type=str,
                         required=True,
                         help='Metrics to compute',
-                        choices=['MAE','MSE','MAE_ZIP'])
+                        choices=['MAE','MSE','MAE_ZIP','RMSE'])
+    
+    return parser.parse_args()
+
+
+def main(arguments):
+    """
+    1. interpretazione argomenti da linea di comando
+       $ isa --predicted 1 2 3 --expected 1 2 4 --metrics MAE
+    """
+
+    print("Hello, World!")
+   
     
     logging.basicConfig(level=logging.WARNING) #DEBUG, INFO, WARNING, ERROR, CRITICAL
     """
@@ -115,22 +134,22 @@ def main():
     CRITICAL: indicazioni di errori gravi nel programma
     """
 
-    Arguments = parser.parse_args()
-    logging.debug(Arguments.predicted)
+    logging.debug(arguments.predicted)
     # print(Arguments.predicted)
-    logging.debug(Arguments.expected)
+    logging.debug(arguments.expected)
     # print(Arguments.expected)
-    logging.debug(Arguments.metrics)
+    logging.debug(arguments.metrics)
     # print(Arguments.metrics)
 
     #2. creazione oggetto Operations
-    solver = Operations(Arguments.predicted, Arguments.expected, Arguments.metrics)
+    solver = Operations(arguments.predicted, arguments.expected, arguments.metrics)
 
     #3. calcolo metrica
-    result = solver.compute_metrics()
-    print(f"Result: {result}")
+    return solver.compute_metrics()
+    
 
 if __name__ == '__main__':
-    main()
+    result = main(setup_parser())
+    print(result)
 
 # Aggiungo un commento
